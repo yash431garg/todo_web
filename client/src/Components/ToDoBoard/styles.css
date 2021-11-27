@@ -11,11 +11,50 @@
   color: #142f43;
 }
 .full_board > h3 {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   margin-bottom: 20px;
   align-items: center;
 }
 
 ul.board_todos {
   list-style-type: square;
+}
+.todo_form {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 20px 0px 20px 20px;
+  margin-left: 20px;
+  width: 40vw;
+}
+.todo_form > input {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  font-size: 2em;
+}
+.todo_form > button {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  color: #142f43;
+  font-size: 1.5em;
+  background-color: white;
+  padding-left: 20px;
+}
+.todo {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 20px 0px 20px 20px;
+  margin-left: 20px;
+  width: 40vw;
+  display: flex;
+  justify-content: space-between;
+}
+.todo > button {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  color: #142f43;
+  font-size: 1.5em;
+  background-color: white;
+  padding-left: 20px;
+  padding-right: 60px;
 }

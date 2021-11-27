@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { rawListeners } = require("../app");
-
+const User = require("../models/user");
 const auth = (req, res, next) => {
   const token =
     req.cookies.token ||
@@ -11,8 +10,8 @@ const auth = (req, res, next) => {
   }
   try {
     const decode = jwt.verify(token, process.env.SECRET_KEY);
-    // req.user = decode;
     // console.log(req.user);
+    req.user = decode;
   } catch (error) {
     return res.status(401).send("Invalid Token");
   }

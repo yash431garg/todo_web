@@ -9,6 +9,7 @@
 .header_brand {
   margin: 20px;
   color: #142f43;
+  text-decoration: none;
 }
 .header_register {
   margin: 20px;
@@ -16,4 +17,5 @@
 }
 .current_time {
   margin: 20px 0px 0px 0px;
+  font-size: 0.7em;
 }

@@ -7,6 +7,7 @@ const auth = require("./middleware/auth");
 
 const User = require("./models/user");
 const Todo = require("./models/todo");
+const todo = require("./models/todo");
 
 const app = express();
 app.use(express.json());
@@ -96,19 +97,33 @@ app.post("/subscribe", async (req, res) => {
 });
 app.post("/board", auth, async (req, res) => {
   try {
-    const todoItmes = await req.body;
-    console.log(todoItmes);
-    console.log(auth);
-    // const user = await User.findOne({ email }).exec();
-    const todo = await Todo.create({
-      userId: "619e45b3296c04858cced53a",
-      todos: todoItmes,
-    });
-    console.log(todo);
+    const todoItems = await req.body;
+    const user = await User.findOne({ email: req.user.email });
+    // console.log(user);
+    const todos = await Todo.findOne({ userId: user._id }).exec();
+    if (!todos) {
+      await Todo.create({
+        userId: user._id,
+        todos: todoItems,
+      });
+    } else {
+      todos.todos = todoItems;
+      await todos.save();
+    }
+    res.json(todoItems);
   } catch (error) {
     if (error) {
       console.log(error);
     }
+  }
+});
+app.get("/bards", auth, async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    // const todos = await Todo.findOne({ userId: user._id }).exec();
+    console.log(user);
+  } catch (error) {
+    console.log(error);
   }
 });
 module.exports = app;
