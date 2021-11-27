@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2em;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin-bottom: 20px;
+}
+
+.header_brand {
+  margin: 20px;
+  color: #142f43;
+}
+.header_register {
+  margin: 20px;
+  color: #142f43;
+}
+.current_time {
+  margin: 20px 0px 0px 0px;
+}

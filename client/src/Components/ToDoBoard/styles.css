@@ -1,0 +1,21 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.full_board {
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+  border-radius: 5px;
+  padding: 0px 50px 50px 50px;
+  margin-top: 10px;
+  color: #142f43;
+}
+.full_board > h3 {
+  text-decoration: underline;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+ul.board_todos {
+  list-style-type: square;
+}
