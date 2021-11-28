@@ -78,6 +78,12 @@ app.post("/login", async (req, res) => {
     console.log(err);
   }
 });
+app.post("/logout", async (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+});
 app.post("/subscribe", async (req, res) => {
   const amount = req.body.amount;
   var instance = new Razorpay({
@@ -117,11 +123,12 @@ app.post("/board", auth, async (req, res) => {
     }
   }
 });
-app.get("/bards", auth, async (req, res) => {
+app.get("/board", auth, async (req, res) => {
   try {
     const user = await User.findOne({ email: req.user.email });
-    // const todos = await Todo.findOne({ userId: user._id }).exec();
-    console.log(user);
+    const todos = await Todo.findOne({ userId: user._id }).exec();
+    console.log(todos);
+    res.json(todos);
   } catch (error) {
     console.log(error);
   }
