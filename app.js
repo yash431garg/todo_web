@@ -4,15 +4,28 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 var cookieParser = require("cookie-parser");
 const auth = require("./middleware/auth");
-
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const User = require("./models/user");
 const Todo = require("./models/todo");
-const todo = require("./models/todo");
 
 const app = express();
+
+const store = new MongoDBStore({
+  uri: `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.zf8xq.mongodb.net/ToDoList?retryWrites=true&w=majority`,
+  collection: "sessions",
+});
+
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
 app.post("/register", async (req, res) => {
   try {
     const { firstname, lastname, email, password } = req.body;
@@ -38,6 +51,7 @@ app.post("/register", async (req, res) => {
         expiresIn: "1h",
       }
     );
+    res.setHeader("Set-Cookie", "loginSession=true");
     user.token = token;
     user.password = undefined;
     res.status(201).json(user);
@@ -67,6 +81,7 @@ app.post("/login", async (req, res) => {
         expires: new Date(Date.now + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
       };
+      // Cookies are not secure but can be used to track the user for secruity sessions are better.
       res.status(200).cookie("token", token, options).json({
         success: true,
         user,
@@ -127,8 +142,8 @@ app.get("/board", auth, async (req, res) => {
   try {
     const user = await User.findOne({ email: req.user.email });
     const todos = await Todo.findOne({ userId: user._id }).exec();
-    console.log(todos);
-    res.json(todos);
+
+    res.json(todos.todos);
   } catch (error) {
     console.log(error);
   }

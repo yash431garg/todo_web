@@ -4,37 +4,18 @@ import { Link } from "react-router-dom";
 // import { BrowserRouter as Link } from "react-router-dom";
 import "./styles.css";
 function Index() {
-  // input states
-  const [firstname, setFirstName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const { email, password } = formData;
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // Handling the name change
-  const handleFirstName = (e) => {
-    setFirstName(e.target.value);
-    setSubmitted(false);
-  };
-  const handleLastName = (e) => {
-    setLastName(e.target.value);
-    setSubmitted(false);
-  };
-
-  // Handling the email change
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-    setSubmitted(false);
-  };
-
-  // Handling the password change
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-    setSubmitted(false);
-  };
   const successMessage = () => {
     return (
       <div
@@ -43,7 +24,7 @@ function Index() {
           display: submitted ? "" : "none",
         }}
       >
-        <h1>User {firstname + lastname} successfully registered!!</h1>
+        <h1>Successfully registered!!</h1>
       </div>
     );
   };
@@ -64,21 +45,11 @@ function Index() {
   // Handling the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      firstname === "" ||
-      lastname === "" ||
-      email === "" ||
-      password === ""
-    ) {
+    if (email === "" || password === "") {
       setError(true);
     } else {
-      const inputData = {
-        firstname,
-        lastname,
-        email,
-        password,
-      };
-      const res = await api.post("/register", inputData);
+      const inputData = formData;
+      const res = await api.post("/login", inputData);
       console.log(res);
       setSubmitted(true);
       setError(false);
@@ -100,12 +71,7 @@ function Index() {
       <form className="form" onSubmit={handleSubmit}>
         <label>
           Email:
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleEmail}
-          />
+          <input type="email" name="email" value={email} onChange={onChange} />
         </label>
         <label>
           Password:
@@ -113,7 +79,7 @@ function Index() {
             type="password"
             name="password"
             value={password}
-            onChange={handlePassword}
+            onChange={onChange}
           />
         </label>
         <div>
@@ -124,9 +90,12 @@ function Index() {
           </Link>
         </div>
         <button type="submit" className="submit_button">
-          Sign Up
+          Sign In
         </button>
       </form>
+      <Link to="/register" className="forgot_password">
+        Forgot Password
+      </Link>
     </div>
   );
 }
